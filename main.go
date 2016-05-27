@@ -70,6 +70,10 @@ func slackLoop(slackChan chan string, slackUsers map[string]string, rtm *slack.R
 				case *slack.MessageEvent:
 					glog.V(2).Info("Message Event")
 					go func () {
+						if ev.Text == "" {
+							return
+						}
+
 						msg := fmt.Sprintf("<%s> %s", slackUsers[ev.User], ev.Text)
 						slackChan <- msg
 					}()
